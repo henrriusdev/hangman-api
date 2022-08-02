@@ -22,6 +22,7 @@ func makeCN() (*sql.DB, error) {
 		return nil, err
 	}
 	log.Println("Connected")
+	return db, nil
 }
 
 func GetQuestion(id int) []Questions {
@@ -33,6 +34,7 @@ func GetQuestion(id int) []Questions {
 
 	query := "SELECT hint, answer, answer_lenght FROM quests WHERE id = $1"
 	row := db.QueryRow(query, id)
+	defer db.Close()
 	if row.Err() != nil {
 		log.Fatal(err)
 		return nil
@@ -50,6 +52,19 @@ func GetQuestion(id int) []Questions {
 	return hangman
 }
 
-func Insert() error {
-	return error
+func Insert(hint string, answer string) error {
+	db, err := makeCN()
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	query := "INSERT INTO quest (hint, answer, answer_lenght) VALUES (%1,$2,$3)"
+	_, err = db.Exec(query, hint, answer, len(answer))
+	defer db.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
