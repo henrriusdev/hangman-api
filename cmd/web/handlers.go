@@ -1,11 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodGet {
+		fmt.Fprintf(w, "Method not allowed.")
+		returm
+	}
+	
 	files := []string{
 		"./UI/base.tmpl.html",
 		"./UI/pages/home.tmpl.html",
