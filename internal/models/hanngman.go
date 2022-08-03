@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/lib/pq"
 	"log"
 )
@@ -24,6 +23,7 @@ func makeCN() (*sql.DB, error) {
 	}
 	log.Println("Connected")
 	return db, nil
+
 }
 
 func GetQuestion(id int) []Questions {
@@ -42,7 +42,7 @@ func GetQuestion(id int) []Questions {
 	}
 
 	var quest Questions
-	err = row.Scan(&quest.ID, &quest.Question, &quest.Answer, &quest.AnswerLenght)
+	err = row.Scan(&quest.Question, &quest.Answer, &quest.AnswerLenght)
 	if err != nil {
 		log.Fatal(err)
 		return nil
@@ -60,8 +60,8 @@ func Insert(hint string, answer string) error {
 		return err
 	}
 
-	query := "INSERT INTO quest (hint, answer, answer_lenght) VALUES (%1,$2,$3)"
-	fmt.Println()
+	query := "INSERT INTO quests (hint, answer, answer_lenght) VALUES ($1,$2,$3)"
+
 	_, err = db.Exec(query, hint, answer, len(answer))
 	defer db.Close()
 	if err != nil {

@@ -9,8 +9,12 @@ import (
 	"strconv"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
 
+func getHangman(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	if r.Method != http.MethodGet {
 		fmt.Fprintf(w, "Method not allowed. %d", http.StatusMethodNotAllowed)
 		return
@@ -30,7 +34,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func createHangman(w http.ResponseWriter, r *http.Request) {
-
+	enableCors(&w)
 	hint, answer := r.URL.Query().Get("hint"), r.URL.Query().Get("answer")
 	fmt.Println(hint, answer)
 	err := models.Insert(hint, answer)

@@ -14,7 +14,7 @@ func thereAreAnError(err error) {
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
+	mux.HandleFunc("/get/hangman", getHangman)
 	mux.HandleFunc("/new/hangman", createHangman)
 	fmt.Println("Starting server...")
 	err := http.ListenAndServe(":4000", mux)
