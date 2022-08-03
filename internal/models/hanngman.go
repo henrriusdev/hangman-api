@@ -14,7 +14,7 @@ type Questions struct {
 }
 
 func makeCN() (*sql.DB, error) {
-	connection := "user=postgres dbname=hangman password=Reyshell host=localhost sslmode=disable"
+	connection := "user=postgres dbname=hangman password=230e9fjf902 host=localhost sslmode=disable"
 	db, err := sql.Open("postgres", connection)
 	if err != nil {
 		return nil, err
