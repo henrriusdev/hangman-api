@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"html/template"
+	"gamesapi/hangman/internal/models"
+	"log"
 	"net/http"
+	"strconv"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -12,12 +15,28 @@ func home(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Method not allowed. %d", http.StatusMethodNotAllowed)
 		return
 	}
-
-	files := []string{
-		"./UI/base.tmpl.html",
-		"./UI/pages/home.tmpl.html",
+	if r.URL.Path == "/new/hangman" {
+		return
 	}
-	res, err := template.ParseFiles(files...)
-	err = res.ExecuteTemplate(w, "base", nil)
-	thereAreAnError(err)
+
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	quest := models.GetQuestion(id)
+
+	json.NewEncoder(w).Encode(quest)
+}
+
+func createHangman(w http.ResponseWriter, r *http.Request) {
+
+	hint, answer := r.URL.Query().Get("hint"), r.URL.Query().Get("answer")
+	fmt.Println(hint, answer)
+	err := models.Insert(hint, answer)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	fmt.Printf("Added hint: %s to the database!", hint)
 }

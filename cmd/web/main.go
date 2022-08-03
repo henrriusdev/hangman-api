@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -14,6 +15,8 @@ func thereAreAnError(err error) {
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
+	mux.HandleFunc("/new/hangman", createHangman)
+	fmt.Println("Starting server...")
 	err := http.ListenAndServe(":4000", mux)
 	thereAreAnError(err)
 }

@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq"
 	"log"
 )
@@ -60,6 +61,7 @@ func Insert(hint string, answer string) error {
 	}
 
 	query := "INSERT INTO quest (hint, answer, answer_lenght) VALUES (%1,$2,$3)"
+	fmt.Println()
 	_, err = db.Exec(query, hint, answer, len(answer))
 	defer db.Close()
 	if err != nil {
