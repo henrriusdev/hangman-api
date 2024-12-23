@@ -10,7 +10,7 @@ RUN go mod download
 COPY . .
 
 # Debug: Check the contents of the /app directory
-RUN ls -la /app && ls -la /app/cmd/web
+RUN ls -la /app && ls -la /app/..
 
 # Attempt to build
 RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/web
