@@ -13,6 +13,6 @@ COPY . .
 RUN ls -la /app && ls -la /app/..
 
 # Attempt to build
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/web
+RUN go build -o main ./cmd/web
 
 CMD ["./main"]
