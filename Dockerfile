@@ -1,17 +1,18 @@
 FROM golang:1.23-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy Go module files first to leverage Docker's build cache
+# Copy Go module files
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the rest of the files
+# Copy everything else
 COPY . .
 
-# Build the application
+# Debug: Check the contents of the /app directory
+RUN ls -la /app && ls -la /app/cmd/web
+
+# Attempt to build
 RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/web
 
-# Command to run the application
 CMD ["./main"]
