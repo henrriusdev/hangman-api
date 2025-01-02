@@ -2,8 +2,9 @@ package models
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
 type Questions struct {
@@ -14,7 +15,7 @@ type Questions struct {
 }
 
 func makeCN() (*sql.DB, error) {
-	connection := "user=postgres dbname=hangman password=230e9fjf902 host=localhost sslmode=disable"
+	connection := "user=Henrrius dbname=hangman password=postgres host=localhost port=4321 sslmode=disable"
 	db, err := sql.Open("postgres", connection)
 	if err != nil {
 		return nil, err
@@ -23,13 +24,12 @@ func makeCN() (*sql.DB, error) {
 	}
 	log.Println("Connected")
 	return db, nil
-
 }
 
 func GetQuestion(id int) []Questions {
 	db, err := makeCN()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return nil
 	}
 
@@ -37,14 +37,14 @@ func GetQuestion(id int) []Questions {
 	row := db.QueryRow(query, id)
 	defer db.Close()
 	if row.Err() != nil {
-		log.Fatal(err)
+		log.Println(row.Err().Error())
 		return nil
 	}
 
 	var quest Questions
 	err = row.Scan(&quest.Question, &quest.Answer, &quest.AnswerLenght)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return nil
 	}
 	var hangman []Questions
@@ -56,7 +56,7 @@ func GetQuestion(id int) []Questions {
 func Insert(hint string, answer string) error {
 	db, err := makeCN()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err.Error())
 		return err
 	}
 

@@ -15,4 +15,6 @@ RUN ls -la /app && ls -la /app/..
 # Attempt to build
 RUN go build -o main ./cmd/web
 
+EXPOSE 4000
+
 CMD ["./main"]
