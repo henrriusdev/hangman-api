@@ -15,7 +15,7 @@ type Questions struct {
 }
 
 func makeCN() (*sql.DB, error) {
-	connection := "user=Henrrius dbname=hangman password=postgres host=host.docker.internal port=4321 sslmode=disable"
+	connection := "user=Henrry dbname=hangman password=postgres host=host.docker.internal port=4321 sslmode=disable"
 	db, err := sql.Open("postgres", connection)
 	if err != nil {
 		return nil, err
